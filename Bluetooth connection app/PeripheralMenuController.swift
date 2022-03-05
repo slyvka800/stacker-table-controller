@@ -9,24 +9,15 @@
 import Cocoa
 import CoreBluetooth
 
-protocol MenuControllerDelegate{
-    func selectedMenuItem(indexPath: IndexPath)
-}
-
-extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate, MenuControllerDelegate {
+extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate {
     
     func setupCollectionView() {
+        peripheralsMenuCollectionView.delegate = self
+        peripheralsMenuCollectionView.dataSource = self
         peripheralsMenuCollectionView.isSelectable = true
         peripheralsMenuCollectionView.allowsEmptySelection = true
         peripheralsMenuCollectionView.allowsMultipleSelection = false
         peripheralsMenuCollectionView.register(PeripheralMenuItem.self, forItemWithIdentifier: PeripheralMenuItem.reuseIdentfier)
-        peripheralsMenuCollectionView.delegate = self
-        peripheralsMenuCollectionView.dataSource = self
-        
-    }
-    
-    func numberOfSections(in collectionView: NSCollectionView) -> Int {
-        return 1
     }
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -39,7 +30,6 @@ extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate, 
         
         if foundPeripherals.indices.contains(setIndex) {
             menuItem.peripheralNameLabel.stringValue = foundPeripherals[setIndex].name ?? "unknown"
-            menuItem.menuController = self
             if foundPeripherals[setIndex] != peripheral {
                 menuItem.peripheralConnectionStatus.isHidden = true
             }
@@ -47,12 +37,8 @@ extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate, 
         return menuItem
     }
     
-    func selectedMenuItem(indexPath: IndexPath) {
-        print("kek")
-        guard let selectedPeripheral = getFoundPeripheral(index: indexPath.item)
-        else { return }
-        print(selectedPeripheral.name)
-        centralManager.connect(selectedPeripheral, options: nil)
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        print(indexPaths.first?.item ?? "kek")
     }
     
     func toggleConnectionIndicator(peripheral: CBPeripheral, isConnected: Bool) {
@@ -66,18 +52,5 @@ extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate, 
                 }
             }
         }
-        
-    }
-}
-
-//extension NSTableView {
-//    open override func validateProposedFirstResponder(_ responder: NSResponder, for event: NSEvent?) -> Bool {
-//        return true
-//    }
-//}
-
-class KEK: NSTableView {
-    override func validateProposedFirstResponder(_ responder: NSResponder, for event: NSEvent?) -> Bool {
-        return true
     }
 }
