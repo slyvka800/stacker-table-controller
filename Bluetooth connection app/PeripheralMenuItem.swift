@@ -11,12 +11,12 @@ import Cocoa
 class PeripheralMenuItem: NSCollectionViewItem {
     @IBOutlet var peripheralNameLabel: NSTextField!
     @IBOutlet var peripheralConnectionStatus: ReusableView!
-    
+
     static let reuseIdentfier = NSUserInterfaceItemIdentifier("PeripheralMenuItem")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+        view.wantsLayer = true
     }
     
 }

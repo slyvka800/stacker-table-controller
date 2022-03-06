@@ -22,7 +22,7 @@ struct PeripheralPackage {
 
 class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDelegate{
     
-    private var centralManager: CBCentralManager!
+    var centralManager: CBCentralManager!
     private(set) var peripheral: CBPeripheral!
     private var lastConnectedPeripheral: CBPeripheral?
     private var characteristicForWriting: CBCharacteristic!
@@ -43,9 +43,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     @IBOutlet var upButtonOutlet: NSButton!
     @IBOutlet var downButtonOutlet: NSButton!
     
-//    @IBOutlet var displayWithActivity: NSTextField!
-    @IBOutlet var foundDevicesTableView: NSTableView!
-    @IBOutlet var peripheralsMenuCollectionView: NSCollectionView!
+    @IBOutlet weak var peripheralsMenuCollectionView: NSCollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +51,6 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         centralManager = CBCentralManager(delegate: self, queue: nil)
         view.layer?.backgroundColor = NSColor(red: 0.333, green: 0.42, blue: 0.5, alpha: 1).cgColor
         view.layer?.cornerRadius = 15
-        
-        foundDevicesTableView.delegate = self
-        foundDevicesTableView.dataSource = self
-        
-        foundDevicesTableView.reloadData()
         
         setupCollectionView()
     }
@@ -106,6 +99,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         upButtonOutlet.title = "Up"
     }
     
+    //MARK: - Sending BLE commands
     @objc func sendCommand() {
         if stopSendingCommands {
             commandsSendingTimer?.invalidate()
@@ -129,7 +123,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     
     
     
-    
+    //MARK: - Bluetooth stuff
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown:
@@ -172,7 +166,6 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         
         guard peripheral.name != nil else {return}
         foundPeripherals.insert(peripheral)
-        foundDevicesTableView.reloadData()
         peripheralsMenuCollectionView.reloadData()
     }
     
@@ -185,6 +178,8 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
 //            }
 //            return
 //        }
+        toggleConnectionIndicator(peripheral: peripheral, isConnected: true)
+        
         self.peripheral = peripheral
         self.lastConnectedPeripheral = peripheral
         peripheral.delegate = self
@@ -247,37 +242,6 @@ extension ViewController{
     }
 }
 
-// MARK: - Found bleutooth peripherals displaying
-extension ViewController: NSTableViewDelegate, NSTableViewDataSource {
-    
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return foundPeripherals.count
-    }
-    
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let foundPeripheral = foundPeripherals[foundPeripherals.index(foundPeripherals.startIndex, offsetBy: row)]
-        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "peripheralCell"), owner: self) as? NSTableCellView {
-            cell.textField?.stringValue = foundPeripheral.name ?? "unknown"
-            return cell
-        }
-        return nil
-    }
-    
-    func tableViewSelectionDidChange(_ notification: Notification) {
-        
-        guard foundDevicesTableView.selectedRow >= 0 else {return}
-        let setIndex = foundPeripherals.index(foundPeripherals.startIndex, offsetBy: foundDevicesTableView.selectedRow)
-        
-        if foundPeripherals.indices.contains(setIndex) {
-            let selectedPeripheral = foundPeripherals[setIndex]
-            centralManager.connect(selectedPeripheral, options: nil)
-            centralManager.stopScan()
-        }
-        
-    }
-    
-}
-
 extension ViewController {
     
     static func freshViewController() -> ViewController {
@@ -292,5 +256,11 @@ extension ViewController {
         }
                 
         return viewController
+    }
+    
+    func getFoundPeripheral(index: Int) -> CBPeripheral? {
+        let setIndex = foundPeripherals.index(foundPeripherals.startIndex, offsetBy: index)
+        if foundPeripherals.indices.contains(setIndex) { return foundPeripherals[setIndex] }
+        return nil
     }
 }

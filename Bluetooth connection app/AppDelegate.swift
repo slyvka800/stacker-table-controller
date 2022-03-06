@@ -12,7 +12,6 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     private var activityLog: String = ""
-    var VC = ViewController()
     
     let statusItem = NSStatusBar.system.statusItem(withLength:NSStatusItem.squareLength)
     let popover = NSPopover()

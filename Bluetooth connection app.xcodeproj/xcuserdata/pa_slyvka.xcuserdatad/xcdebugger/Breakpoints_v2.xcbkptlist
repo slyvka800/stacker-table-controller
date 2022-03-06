@@ -14,8 +14,8 @@
             filePath = "Bluetooth connection app/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "centralManagerDidUpdateState(_:)"
             landmarkType = "7">
          </BreakpointContent>
