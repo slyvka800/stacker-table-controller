@@ -38,7 +38,10 @@ extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        print(indexPaths.first?.item ?? "kek")
+        guard let cellIndex = indexPaths.first?.item else { return }
+        if let selectedPeripheral = getFoundPeripheral(index: cellIndex) {
+            centralManager.connect(selectedPeripheral, options: nil)
+        }
     }
     
     func toggleConnectionIndicator(peripheral: CBPeripheral, isConnected: Bool) {
