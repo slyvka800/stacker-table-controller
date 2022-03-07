@@ -22,6 +22,11 @@ struct PeripheralPackage {
 
 class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDelegate{
     
+    enum DirectionCommand {
+        case up
+        case down
+    }
+    
     var centralManager: CBCentralManager!
     private(set) var peripheral: CBPeripheral!
     private var lastConnectedPeripheral: CBPeripheral?
@@ -29,7 +34,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     private(set) var foundPeripherals: Set<CBPeripheral> = []
     private var foundPeripheralsPackages: PeripheralPackage?
     
-    private var command = "up"
+    private var command: DirectionCommand = .up
     private var stopSendingCommands = true
     private let commandUpArray: [UInt8] = [0xF1, 0xF1, 0x01, 0x00, 0x01, 0x7E]
     private let commandDownArray: [UInt8] = [0xF1, 0xF1, 0x02, 0x00, 0x02, 0x7E]
@@ -42,6 +47,8 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     @IBOutlet var topView: NSView!
     @IBOutlet var upButtonOutlet: NSButton!
     @IBOutlet var downButtonOutlet: NSButton!
+    @IBOutlet weak var heightAdjustButton: FlatButton!
+    private var heightMenuController: HeightMenuController?
     
     @IBOutlet weak var peripheralsMenuCollectionView: NSCollectionView!
     
@@ -52,51 +59,45 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         view.layer?.backgroundColor = NSColor(red: 0.333, green: 0.42, blue: 0.5, alpha: 1).cgColor
         view.layer?.cornerRadius = 15
         
+        heightMenuController = HeightMenuController(nextTo: heightAdjustButton)
+        heightAdjustButton.target = heightMenuController
+        heightAdjustButton.action = #selector(heightMenuController?.togglePopover)
+        
         setupCollectionView()
     }
     
     @IBAction func upButton(_ sender: Any) {
         
-        command = "up"
+        command = .up
         
         if upButtonOutlet.state == .on {
             stopSendingCommands = true
-//            upButtonOutlet.title = "Up"
+            downButtonOutlet.state = .off
             print(upButtonOutlet.state)
-//            upButtonOutlet.isHighlighted = false
-
         } else {
             stopSendingCommands = false
-//            upButtonOutlet.title = "Cancel"
             print(upButtonOutlet.state)
-//            upButtonOutlet.isHighlighted = true
         }
         
         if commandsSendingTimer == nil {
             commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
-//            upButtonOutlet.title = "Cancel"
-//            upButtonOutlet.isHighlighted = true
             print(upButtonOutlet.state)
         }
-//        downButtonOutlet.title = "Down"
     }
     
     @IBAction func downButton(_ sender: Any) {
-        command = "down"
+        command = .down
         
-        if downButtonOutlet.title == "Cancel" {
+        if downButtonOutlet.state == .on {
             stopSendingCommands = true
-            downButtonOutlet.title = "Down"
+            upButtonOutlet.state = .off
         } else {
             stopSendingCommands = false
-            downButtonOutlet.title = "Cancel"
         }
 
         if commandsSendingTimer == nil {
             commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
-            downButtonOutlet.title = "Cancel"
         }
-        upButtonOutlet.title = "Up"
     }
     
     //MARK: - Sending BLE commands
@@ -106,7 +107,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
             commandsSendingTimer = nil
         }
         var data = NSData()
-        if command == "up" {
+        if command == .up {
             data = NSData(bytes: commandUpArray, length: 6)
         } else {
             data = NSData(bytes: commandDownArray, length: 6)

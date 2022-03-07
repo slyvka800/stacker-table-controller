@@ -685,8 +685,8 @@
         <scene sceneID="s2a-JQ-E50">
             <objects>
                 <viewController storyboardIdentifier="ViewController" id="1TG-ab-EVk" customClass="ViewController" customModule="Bluetooth_connection_app" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" wantsLayer="YES" id="dZN-jE-9Ov" customClass="ReusableView" customModule="Bluetooth_connection_app" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="448" height="250"/>
+                    <view key="view" wantsLayer="YES" id="dZN-jE-9Ov" customClass="CustomizablePopover" customModule="Bluetooth_connection_app" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="448" height="255"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="PLs-Oz-vsz" customClass="ReusableView" customModule="Bluetooth_connection_app" customModuleProvider="target">
@@ -755,7 +755,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="kzH-Fu-D9t" customClass="ReusableView" customModule="Bluetooth_connection_app" customModuleProvider="target">
                                 <rect key="frame" x="191" y="5" width="252" height="220"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="evc-zK-ls7">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="evc-zK-ls7" customClass="ToggleButton" customModule="Bluetooth_connection_app" customModuleProvider="target">
                                         <rect key="frame" x="212" y="158" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="L2l-ut-9wG"/>
@@ -783,7 +783,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </customView>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7ql-8P-FCC">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7ql-8P-FCC" customClass="ToggleButton" customModule="Bluetooth_connection_app" customModuleProvider="target">
                                         <rect key="frame" x="212" y="119" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="RdR-Sg-WxY"/>
@@ -929,20 +929,44 @@
                                 </userDefinedRuntimeAttributes>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="0cP-1i-Dhs" customClass="ReusableView" customModule="Bluetooth_connection_app" customModuleProvider="target">
-                                <rect key="frame" x="5" y="230" width="438" height="15"/>
+                                <rect key="frame" x="5" y="230" width="438" height="20"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lp1-Ra-f1y">
-                                        <rect key="frame" x="188" y="0.0" width="62" height="16"/>
+                                        <rect key="frame" x="188" y="2" width="62" height="16"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="STACKER" drawsBackground="YES" id="RIk-xx-SCM">
                                             <font key="font" usesAppearanceFont="YES"/>
                                             <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         </textFieldCell>
                                     </textField>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h6p-w8-HhL" customClass="FlatButton" customModule="Bluetooth_connection_app" customModuleProvider="target">
+                                        <rect key="frame" x="387" y="2" width="48" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="48" id="6ML-Ua-MZH"/>
+                                            <constraint firstAttribute="height" constant="16" id="Nay-gF-YH3"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="smallSquare" title="Height" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="Iwt-0Y-TF2">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system" size="10"/>
+                                        </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                                <color key="value" red="0.47058823529999999" green="0.48627450979999998" blue="0.6588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="foreColor">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="lp1-Ra-f1y" firstAttribute="centerY" secondItem="0cP-1i-Dhs" secondAttribute="centerY" id="5aV-zH-oYI"/>
-                                    <constraint firstAttribute="height" constant="15" id="70K-JW-49L"/>
+                                    <constraint firstAttribute="height" constant="20" id="70K-JW-49L"/>
+                                    <constraint firstItem="h6p-w8-HhL" firstAttribute="centerY" secondItem="0cP-1i-Dhs" secondAttribute="centerY" id="BeB-fT-y9e"/>
+                                    <constraint firstAttribute="trailing" secondItem="h6p-w8-HhL" secondAttribute="trailing" constant="3" id="jQW-UR-b6F"/>
                                     <constraint firstItem="lp1-Ra-f1y" firstAttribute="centerX" secondItem="0cP-1i-Dhs" secondAttribute="centerX" id="zp7-sc-mEY"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -950,7 +974,7 @@
                                         <color key="value" red="0.7725490196" green="0.79215686269999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="7"/>
+                                        <real key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
@@ -973,10 +997,14 @@
                             <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                                 <color key="value" red="0.33333333333333331" green="0.41960784313725491" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="popoverBackgroundColor">
+                                <color key="value" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
                         <outlet property="downButtonOutlet" destination="7ql-8P-FCC" id="3kQ-Rj-Z7P"/>
+                        <outlet property="heightAdjustButton" destination="h6p-w8-HhL" id="9Md-4U-kqG"/>
                         <outlet property="leftView" destination="PLs-Oz-vsz" id="QWM-1q-9XE"/>
                         <outlet property="peripheralsMenuCollectionView" destination="JFS-re-LMn" id="RCf-j9-MP3"/>
                         <outlet property="rightView" destination="kzH-Fu-D9t" id="Icv-BK-Cen"/>
@@ -987,6 +1015,101 @@
                 <customObject id="Szl-Dh-4q5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="42" y="419"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="vdF-CO-gXV">
+            <objects>
+                <viewController storyboardIdentifier="HeightMenu" id="8M0-7O-Cpn" sceneMemberID="viewController">
+                    <view key="view" id="lis-kr-e6u" customClass="CustomizablePopover" customModule="Bluetooth_connection_app" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JWa-DW-1pJ">
+                                <rect key="frame" x="124" y="114" width="96" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="KOS-uf-jqK"/>
+                                    <constraint firstAttribute="width" constant="96" id="QTh-K8-1eD"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="9EL-Kc-HTe">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YpC-Tw-iWv">
+                                <rect key="frame" x="124" y="62" width="96" height="21"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="413-9E-1qW">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1gc-EY-wMb">
+                                <rect key="frame" x="7" y="117" width="111" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Max height" id="KDH-Rq-VAm">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7GR-pZ-R3N">
+                                <rect key="frame" x="8" y="65" width="108" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Min height" id="qW2-zU-5LL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gdS-EM-KKl">
+                                <rect key="frame" x="58" y="165" width="124" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Set up height range" id="LWO-ZG-pPt">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JFe-Bc-Ym7">
+                                <rect key="frame" x="86" y="13" width="69" height="32"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xVA-0g-MWq">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="7GR-pZ-R3N" firstAttribute="centerY" secondItem="YpC-Tw-iWv" secondAttribute="centerY" id="0SG-Lo-bD8"/>
+                            <constraint firstItem="gdS-EM-KKl" firstAttribute="centerX" secondItem="lis-kr-e6u" secondAttribute="centerX" id="EUh-0R-C2Q"/>
+                            <constraint firstItem="JWa-DW-1pJ" firstAttribute="top" secondItem="lis-kr-e6u" secondAttribute="top" constant="65" id="FL7-yE-wWc"/>
+                            <constraint firstAttribute="trailing" secondItem="JWa-DW-1pJ" secondAttribute="trailing" constant="20" symbolic="YES" id="JQ4-ge-448"/>
+                            <constraint firstItem="1gc-EY-wMb" firstAttribute="leading" secondItem="lis-kr-e6u" secondAttribute="leading" constant="9" id="OMK-Iy-DTK"/>
+                            <constraint firstItem="1gc-EY-wMb" firstAttribute="centerY" secondItem="JWa-DW-1pJ" secondAttribute="centerY" id="Oqv-X6-kzI"/>
+                            <constraint firstItem="7GR-pZ-R3N" firstAttribute="leading" secondItem="lis-kr-e6u" secondAttribute="leading" constant="10" id="THF-RD-SJH"/>
+                            <constraint firstItem="gdS-EM-KKl" firstAttribute="top" secondItem="lis-kr-e6u" secondAttribute="top" constant="19" id="a1e-Cm-cV1"/>
+                            <constraint firstItem="YpC-Tw-iWv" firstAttribute="leading" secondItem="7GR-pZ-R3N" secondAttribute="trailing" constant="10" id="aaS-iq-a2h"/>
+                            <constraint firstItem="JWa-DW-1pJ" firstAttribute="leading" secondItem="1gc-EY-wMb" secondAttribute="trailing" constant="8" symbolic="YES" id="hdW-Lx-y9R"/>
+                            <constraint firstItem="YpC-Tw-iWv" firstAttribute="height" secondItem="JWa-DW-1pJ" secondAttribute="height" id="kKc-1w-51T"/>
+                            <constraint firstItem="YpC-Tw-iWv" firstAttribute="top" secondItem="JWa-DW-1pJ" secondAttribute="bottom" constant="31" id="lUM-mq-z5k"/>
+                            <constraint firstAttribute="bottom" secondItem="JFe-Bc-Ym7" secondAttribute="bottom" constant="20" symbolic="YES" id="ntP-PA-Y7P"/>
+                            <constraint firstAttribute="trailing" secondItem="YpC-Tw-iWv" secondAttribute="trailing" constant="20" symbolic="YES" id="phJ-3k-Usp"/>
+                            <constraint firstItem="YpC-Tw-iWv" firstAttribute="width" secondItem="JWa-DW-1pJ" secondAttribute="width" id="tdj-Kx-2Zg"/>
+                            <constraint firstItem="JFe-Bc-Ym7" firstAttribute="centerX" secondItem="lis-kr-e6u" secondAttribute="centerX" id="y2J-wN-gik"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                <color key="value" red="0.47058823529999999" green="0.48627450979999998" blue="0.6588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="15"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="popoverBackgroundColor">
+                                <color key="value" red="0.47058823529999999" green="0.48627450979999998" blue="0.6588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </viewController>
+                <customObject id="blw-Xh-lSL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-62" y="790"/>
         </scene>
     </scenes>
     <resources>

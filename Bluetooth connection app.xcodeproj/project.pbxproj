@@ -13,10 +13,15 @@
 		EF300C1C27611599008F039D /* PeripheralMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF300C1B27611599008F039D /* PeripheralMenuController.swift */; };
 		EF300C2527611A2C008F039D /* PeripheralMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF300C2327611A2C008F039D /* PeripheralMenuItem.swift */; };
 		EF300C2627611A2C008F039D /* PeripheralMenuItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF300C2427611A2C008F039D /* PeripheralMenuItem.xib */; };
+		EF809DB527D4F6C500F5D60D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF809DB427D4F6C500F5D60D /* Extensions.swift */; };
+		EF809DB927D4F93B00F5D60D /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF809DB827D4F93B00F5D60D /* ToggleButton.swift */; };
+		EF809DBB27D51B7E00F5D60D /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF809DBA27D51B7E00F5D60D /* FlatButton.swift */; };
 		EF9F60D0275B723F00E2214A /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9F60CF275B723F00E2214A /* ReusableView.swift */; };
 		EFD0C156261BAD7400E4473B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0C155261BAD7400E4473B /* AppDelegate.swift */; };
 		EFD0C158261BAD7400E4473B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0C157261BAD7400E4473B /* ViewController.swift */; };
 		EFD0C15A261BAD7500E4473B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFD0C159261BAD7500E4473B /* Assets.xcassets */; };
+		EFD6D2C627D6404F001BE785 /* HeightMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD6D2C527D6404F001BE785 /* HeightMenuController.swift */; };
+		EFD6D2C827D65039001BE785 /* CustomizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD6D2C727D65039001BE785 /* CustomizablePopover.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +48,9 @@
 		EF300C1B27611599008F039D /* PeripheralMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralMenuController.swift; sourceTree = "<group>"; };
 		EF300C2327611A2C008F039D /* PeripheralMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralMenuItem.swift; sourceTree = "<group>"; };
 		EF300C2427611A2C008F039D /* PeripheralMenuItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PeripheralMenuItem.xib; sourceTree = "<group>"; };
+		EF809DB427D4F6C500F5D60D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		EF809DB827D4F93B00F5D60D /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
+		EF809DBA27D51B7E00F5D60D /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		EF9F60CF275B723F00E2214A /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		EFD0C152261BAD7400E4473B /* Bluetooth connection app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluetooth connection app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFD0C155261BAD7400E4473B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +60,8 @@
 		EFD0C15F261BAD7500E4473B /* Bluetooth_connection_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bluetooth_connection_app.entitlements; sourceTree = "<group>"; };
 		EFD0C164261BAD7500E4473B /* Bluetooth connection appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bluetooth connection appTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFD0C16F261BAD7500E4473B /* Bluetooth connection appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bluetooth connection appUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFD6D2C527D6404F001BE785 /* HeightMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightMenuController.swift; sourceTree = "<group>"; };
+		EFD6D2C727D65039001BE785 /* CustomizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizablePopover.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,14 +89,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EF9F609C275A2CAD00E2214A /* View */ = {
+		EF809DB227D4F64800F5D60D /* PeripheralsMenu */ = {
+			isa = PBXGroup;
+			children = (
+				EF300C2327611A2C008F039D /* PeripheralMenuItem.swift */,
+				EF300C2427611A2C008F039D /* PeripheralMenuItem.xib */,
+				EF300C1B27611599008F039D /* PeripheralMenuController.swift */,
+			);
+			path = PeripheralsMenu;
+			sourceTree = "<group>";
+		};
+		EF809DB327D4F6A500F5D60D /* Extra */ = {
+			isa = PBXGroup;
+			children = (
+				EF809DB427D4F6C500F5D60D /* Extensions.swift */,
+			);
+			path = Extra;
+			sourceTree = "<group>";
+		};
+		EF809DB627D4F8C100F5D60D /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				EF809DB727D4F8D300F5D60D /* Buttons */,
+				EF9F609C275A2CAD00E2214A /* Views */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
+		EF809DB727D4F8D300F5D60D /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				EF809DB827D4F93B00F5D60D /* ToggleButton.swift */,
+				EF809DBA27D51B7E00F5D60D /* FlatButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		EF9F609C275A2CAD00E2214A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				EF9F60CF275B723F00E2214A /* ReusableView.swift */,
+				EFD6D2C727D65039001BE785 /* CustomizablePopover.swift */,
 				EF300C02275D14CC008F039D /* StepperLeftTriangle.swift */,
 				EF300C0A275D211C008F039D /* StepperRightTriangle.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		EFD0C149261BAD7400E4473B = {
@@ -110,16 +157,16 @@
 		EFD0C154261BAD7400E4473B /* Bluetooth connection app */ = {
 			isa = PBXGroup;
 			children = (
-				EF300C2327611A2C008F039D /* PeripheralMenuItem.swift */,
-				EF300C2427611A2C008F039D /* PeripheralMenuItem.xib */,
-				EF9F609C275A2CAD00E2214A /* View */,
+				EF809DB627D4F8C100F5D60D /* Reusable */,
+				EF809DB327D4F6A500F5D60D /* Extra */,
+				EF809DB227D4F64800F5D60D /* PeripheralsMenu */,
 				EFD0C155261BAD7400E4473B /* AppDelegate.swift */,
 				EFD0C157261BAD7400E4473B /* ViewController.swift */,
-				EF300C1B27611599008F039D /* PeripheralMenuController.swift */,
 				EFD0C159261BAD7500E4473B /* Assets.xcassets */,
 				EF2AD92A264298C700234E1C /* Main.storyboard */,
 				EFD0C15E261BAD7500E4473B /* Info.plist */,
 				EFD0C15F261BAD7500E4473B /* Bluetooth_connection_app.entitlements */,
+				EFD6D2C527D6404F001BE785 /* HeightMenuController.swift */,
 			);
 			path = "Bluetooth connection app";
 			sourceTree = "<group>";
@@ -260,7 +307,12 @@
 			files = (
 				EFD0C158261BAD7400E4473B /* ViewController.swift in Sources */,
 				EF9F60D0275B723F00E2214A /* ReusableView.swift in Sources */,
+				EFD6D2C627D6404F001BE785 /* HeightMenuController.swift in Sources */,
+				EF809DBB27D51B7E00F5D60D /* FlatButton.swift in Sources */,
 				EFD0C156261BAD7400E4473B /* AppDelegate.swift in Sources */,
+				EFD6D2C827D65039001BE785 /* CustomizablePopover.swift in Sources */,
+				EF809DB527D4F6C500F5D60D /* Extensions.swift in Sources */,
+				EF809DB927D4F93B00F5D60D /* ToggleButton.swift in Sources */,
 				EF300C03275D14CC008F039D /* StepperLeftTriangle.swift in Sources */,
 				EF300C1C27611599008F039D /* PeripheralMenuController.swift in Sources */,
 				EF300C0B275D211C008F039D /* StepperRightTriangle.swift in Sources */,
