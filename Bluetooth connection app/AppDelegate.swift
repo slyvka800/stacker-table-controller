@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import UserNotifications
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -18,6 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        
+        UNUserNotificationCenter.current().delegate = self
         
         // popover setup
         if let button = statusItem.button {
@@ -94,5 +97,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
 
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if #available(macOS 11.0, *) {
+            return completionHandler([.sound, .list])
+        }
+        return completionHandler([.sound])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.notification.request.content.categoryIdentifier == "skipMovementAction" {
+            switch response.actionIdentifier {
+            case "skip":
+                ActionHandler.shared.skip()
+            case "postpone":
+                ActionHandler.shared.postpone()
+            default:
+                ActionHandler.shared.skip()
+            }
+        }
+    }
 }
 

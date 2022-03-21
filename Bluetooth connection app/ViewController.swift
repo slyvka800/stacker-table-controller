@@ -64,6 +64,13 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         heightAdjustButton.action = #selector(heightMenuController?.togglePopover)
         
         setupCollectionView()
+        
+        TimerService.shared.standingTime = 10
+        TimerService.shared.sittingTime = 20
+    }
+    
+    override func viewWillAppear() {
+//        NotificationService.shared.sendNotification(notificationType: .goingDown)
     }
     
     @IBAction func upButton(_ sender: Any) {
