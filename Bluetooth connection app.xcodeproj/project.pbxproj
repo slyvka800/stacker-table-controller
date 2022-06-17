@@ -24,6 +24,7 @@
 		EFD0C156261BAD7400E4473B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0C155261BAD7400E4473B /* AppDelegate.swift */; };
 		EFD0C158261BAD7400E4473B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0C157261BAD7400E4473B /* ViewController.swift */; };
 		EFD0C15A261BAD7500E4473B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFD0C159261BAD7500E4473B /* Assets.xcassets */; };
+		EFD2D01C285B4F8C00B49801 /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD2D01B285B4F8C00B49801 /* PropertyWrappers.swift */; };
 		EFD6D2C627D6404F001BE785 /* HeightMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD6D2C527D6404F001BE785 /* HeightMenuController.swift */; };
 		EFD6D2C827D65039001BE785 /* CustomizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD6D2C727D65039001BE785 /* CustomizablePopover.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		EFD0C15F261BAD7500E4473B /* Bluetooth_connection_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bluetooth_connection_app.entitlements; sourceTree = "<group>"; };
 		EFD0C164261BAD7500E4473B /* Bluetooth connection appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bluetooth connection appTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFD0C16F261BAD7500E4473B /* Bluetooth connection appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bluetooth connection appUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFD2D01B285B4F8C00B49801 /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		EFD6D2C527D6404F001BE785 /* HeightMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightMenuController.swift; sourceTree = "<group>"; };
 		EFD6D2C727D65039001BE785 /* CustomizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizablePopover.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,6 +131,7 @@
 			children = (
 				EF809DB427D4F6C500F5D60D /* Extensions.swift */,
 				EF6123B227E8B49C0085A447 /* Constants.swift */,
+				EFD2D01B285B4F8C00B49801 /* PropertyWrappers.swift */,
 			);
 			path = Extra;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				EF414CB627E792CB0018554E /* TimerService.swift in Sources */,
 				EF809DB927D4F93B00F5D60D /* ToggleButton.swift in Sources */,
 				EF300C03275D14CC008F039D /* StepperLeftTriangle.swift in Sources */,
+				EFD2D01C285B4F8C00B49801 /* PropertyWrappers.swift in Sources */,
 				EF300C1C27611599008F039D /* PeripheralMenuController.swift in Sources */,
 				EF300C0B275D211C008F039D /* StepperRightTriangle.swift in Sources */,
 				EF300C2527611A2C008F039D /* PeripheralMenuItem.swift in Sources */,

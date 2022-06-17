@@ -837,6 +837,22 @@
                                                     <constraint firstAttribute="width" constant="17" id="tSM-CX-eNp"/>
                                                 </constraints>
                                             </customView>
+                                            <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0u-Ci-kf7">
+                                                <rect key="frame" x="29" y="2" width="42" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="HVb-Ia-9fj">
+                                                    <font key="font" metaFont="system"/>
+                                                    <date key="date" timeIntervalSinceReferenceDate="676640461.51527405">
+                                                        <!--2022-06-11 11:41:01 +0000-->
+                                                    </date>
+                                                    <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
+                                                </datePickerCell>
+                                                <connections>
+                                                    <action selector="sitTimeIntervalDidChange:" target="1TG-ab-EVk" id="kTY-gV-eEn"/>
+                                                </connections>
+                                            </datePicker>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="Pf2-dK-jIA" firstAttribute="top" secondItem="Y9B-2g-1Jh" secondAttribute="top" constant="5" id="1nf-XE-gMx"/>
@@ -876,6 +892,22 @@
                                                     <constraint firstAttribute="height" constant="15" id="xYQ-On-PEu"/>
                                                 </constraints>
                                             </customView>
+                                            <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9AF-uG-r6N">
+                                                <rect key="frame" x="29" y="2" width="42" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="Vot-vn-ZBb">
+                                                    <font key="font" metaFont="system"/>
+                                                    <date key="date" timeIntervalSinceReferenceDate="677086977.01223195">
+                                                        <!--2022-06-16 15:42:57 +0000-->
+                                                    </date>
+                                                    <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
+                                                </datePickerCell>
+                                                <connections>
+                                                    <action selector="standTimeIntervalDidChange:" target="1TG-ab-EVk" id="j0U-5I-Wkn"/>
+                                                </connections>
+                                            </datePicker>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="Ugl-Cy-8c8" firstAttribute="leading" secondItem="snU-1A-I1A" secondAttribute="leading" constant="6" id="6fF-VU-h0Y"/>
@@ -1008,13 +1040,15 @@
                         <outlet property="leftView" destination="PLs-Oz-vsz" id="QWM-1q-9XE"/>
                         <outlet property="peripheralsMenuCollectionView" destination="JFS-re-LMn" id="RCf-j9-MP3"/>
                         <outlet property="rightView" destination="kzH-Fu-D9t" id="Icv-BK-Cen"/>
+                        <outlet property="sitModeInterval" destination="z0u-Ci-kf7" id="yfO-Bl-hRC"/>
+                        <outlet property="standModeInterval" destination="9AF-uG-r6N" id="pi5-K0-3Ii"/>
                         <outlet property="topView" destination="0cP-1i-Dhs" id="icu-ZA-6aW"/>
                         <outlet property="upButtonOutlet" destination="evc-zK-ls7" id="Uh2-nL-EkF"/>
                     </connections>
                 </viewController>
                 <customObject id="Szl-Dh-4q5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="42" y="419"/>
+            <point key="canvasLocation" x="42" y="418.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="vdF-CO-gXV">

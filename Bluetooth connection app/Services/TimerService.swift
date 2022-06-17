@@ -10,20 +10,29 @@ import Foundation
 
 final class TimerService {
     
-    enum TimerType {
+    enum TimerType: Int {
         case sitting
         case standing
     }
     
-    var standingTime: TimeInterval = 20 {
+    @RawRepresentableStorage("currentActivityTimer", defaultValue: TimerType.sitting)
+    var currentActivityType: TimerType
+    
+    @Storage(key: "standingTime", defaultValue: TimeInterval(180))
+    var standingTime: TimeInterval {
         didSet {
-            setupTimer(ofType: .standing)
+            if currentActivityType == .standing {
+                setupTimer(ofType: .standing)
+            }
         }
     }
     
-    var sittingTime: TimeInterval = 5 {
+    @Storage(key: "sittingTime", defaultValue: TimeInterval(60))
+    var sittingTime: TimeInterval {
         didSet {
-            setupTimer(ofType: .sitting)
+            if currentActivityType == .sitting {
+                setupTimer(ofType: .sitting)
+            }
         }
     }
     
@@ -31,11 +40,13 @@ final class TimerService {
     
     private var timer = Timer()
     
-    private var currentMode: TimerType? = .sitting
+    private var currentMode: TimerType?
+    
+    weak var bluetoothServiceDelegate: BluetoothServiceDelegate?
     
     private init() {}
     
-    private func setupTimer(ofType timerType: TimerType) {
+    func setupTimer(ofType timerType: TimerType) {
         var newInterval: TimeInterval = 0
         
         switch timerType {
@@ -44,30 +55,62 @@ final class TimerService {
         case .standing:
             newInterval = standingTime
         }
-        
-        if currentMode == timerType {
-            let timeElapsed = timer.timeInterval - timer.fireDate.timeIntervalSinceNow
+
+        if currentActivityType == timerType {
+            let timeElapsed: TimeInterval
+            if timer.isValid {
+                timeElapsed = timer.timeInterval - timer.fireDate.timeIntervalSinceNow
+                print("timer is set to - ", timer.timeInterval, "   from now to fire date - ", timer.fireDate.timeIntervalSinceNow)
+            } else {
+                timeElapsed = timer.timeInterval
+            }
+            
             let timeRemainingForNewTimer = newInterval - timeElapsed
             let timeToNotification = timeRemainingForNewTimer - Constants.notiifcationBeforeMovementInterval
             timer.invalidate()
             timer = Timer.scheduledTimer(timeInterval: timeToNotification, target: self, selector: #selector(endInterval), userInfo: nil, repeats: false)
+            print("time is set to \(timeToNotification) in line 54")
         } else {
+            timer.invalidate()
             let timeToNotification = newInterval - Constants.notiifcationBeforeMovementInterval
             timer = Timer.scheduledTimer(timeInterval: timeToNotification, target: self, selector: #selector(endInterval), userInfo: nil, repeats: false)
+            print("time is set to \(timeToNotification) in line 58")
         }
+        
+        currentActivityType = timerType
     }
     
     @objc private func endInterval() {
-        currentMode = (currentMode == .sitting) ? .standing : .sitting
+        let currentModeWillBe = (self.currentActivityType == TimerType.sitting) ? TimerType.standing : TimerType.sitting
         let notificationType: NotificationService.NotificationType =
-        (currentMode == .sitting) ? .goingDown : .goingUp
+        (currentModeWillBe == .sitting) ? .goingDown : .goingUp
         
         NotificationService.shared.sendNotification(notificationType: notificationType)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.notiifcationBeforeMovementInterval) { [weak self] in
+            guard let self = self else { return }
             print("there should be table moving")
-            self?.setupTimer(ofType: self?.currentMode ?? .sitting)
+            self.bluetoothServiceDelegate?.moveTable(notificationType == .goingUp ? ViewController.DirectionCommand.up : ViewController.DirectionCommand.down)
+            self.setupTimer(ofType: self.currentActivityType == .sitting ? .standing : .sitting)
         }
+    }
+    
+    func getDateFromInterval(_ intervalType: ViewController.IntervalType) -> Date {
+        let intervalValue: TimeInterval
+        
+        switch intervalType {
+        case .standingInterval:
+            intervalValue = standingTime
+        case .sittingInterval:
+            intervalValue = sittingTime
+        }
+        var components = DateComponents()
+        components.minute = Int( ( Int(intervalValue) % 3600 ) / 60)
+        components.hour = Int( Int(intervalValue) / 3600 )
+        
+        let date = Calendar.current.date(from: components)
+                
+        return date ?? Date()
     }
     
 }

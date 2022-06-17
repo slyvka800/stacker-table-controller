@@ -20,11 +20,20 @@ struct PeripheralPackage {
     var RSSI: NSNumber?
 }
 
-class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDelegate{
-    
+protocol BluetoothServiceDelegate: AnyObject {
+    func moveTable(_ direction: ViewController.DirectionCommand)
+}
+
+class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDelegate, BluetoothServiceDelegate{
+
     enum DirectionCommand {
         case up
         case down
+    }
+    
+    enum IntervalType {
+        case sittingInterval
+        case standingInterval
     }
     
     var centralManager: CBCentralManager!
@@ -49,6 +58,8 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     @IBOutlet var downButtonOutlet: NSButton!
     @IBOutlet weak var heightAdjustButton: FlatButton!
     private var heightMenuController: HeightMenuController?
+    @IBOutlet weak var sitModeInterval: NSDatePicker!
+    @IBOutlet weak var standModeInterval: NSDatePicker!
     
     @IBOutlet weak var peripheralsMenuCollectionView: NSCollectionView!
     
@@ -65,8 +76,10 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         
         setupCollectionView()
         
-        TimerService.shared.standingTime = 10
-        TimerService.shared.sittingTime = 20
+        sitModeInterval.dateValue = TimerService.shared.getDateFromInterval(.sittingInterval)
+        standModeInterval.dateValue = TimerService.shared.getDateFromInterval(.standingInterval)
+        
+        TimerService.shared.bluetoothServiceDelegate = self
     }
     
     override func viewWillAppear() {
@@ -123,12 +136,50 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withResponse)
     }
     
+    func moveTable(_ direction: DirectionCommand) {
+        command = direction
+        stopSendingCommands = false
+        
+        commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+            self?.stopSendingCommands = true
+        }
+    }
+    
     func printActivity(_ messageStr: String){
 //        print(messageStr)
 //        displayWithActivity?.stringValue = messageStr
     }
     
+    func getTimeInterval(intervalType: IntervalType) -> TimeInterval {
+        let dateValue: Date
+        
+        switch intervalType {
+        case .sittingInterval:
+            dateValue = sitModeInterval.dateValue
+        case .standingInterval:
+            dateValue = standModeInterval.dateValue
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm"
+        formatter.timeStyle = .short
+        let timeString = formatter.string(from: dateValue)
+        let timeComponenetsArray = timeString.components(separatedBy: ":")
+        let timeComponenetsArrayInt = timeComponenetsArray.map { Int($0)! }
+        let totalSecondsCount = timeComponenetsArrayInt[0] * 3600 + timeComponenetsArrayInt[1] * 60
+        let timeInterval = TimeInterval(totalSecondsCount)
+        return timeInterval
+    }
     
+    @IBAction func sitTimeIntervalDidChange(_ sender: Any) {
+        TimerService.shared.sittingTime = getTimeInterval(intervalType: .sittingInterval)
+    }
+    
+    @IBAction func standTimeIntervalDidChange(_ sender: Any) {
+        TimerService.shared.standingTime = getTimeInterval(intervalType: .standingInterval)
+    }
     
     
     //MARK: - Bluetooth stuff
@@ -187,6 +238,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
 //            return
 //        }
         toggleConnectionIndicator(peripheral: peripheral, isConnected: true)
+        TimerService.shared.setupTimer(ofType: TimerService.shared.currentActivityType)
         
         self.peripheral = peripheral
         self.lastConnectedPeripheral = peripheral
@@ -212,7 +264,7 @@ extension ViewController{
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard peripheral.services != nil else {return}
-        guard let services = peripheral.services else {return}
+        guard let services = peripheral.services else { return }
         
         for service in services{
             print(service)
