@@ -21,7 +21,6 @@ class HeightMenuController {
     }
     
     @objc func togglePopover() {
-        print("togglePopover")
         if !popover.isShown {
             showPopover()
         } else {

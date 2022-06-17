@@ -19,6 +19,6 @@ final class ActionHandler {
     }
     
     func postpone() {
-//        TimerService.shared.setupTimer(ofType: <#T##TimerService.TimerType#>)
+        TimerService.shared.setupTimer(ofType: <#T##TimerService.TimerType#>)
     }
 }

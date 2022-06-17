@@ -22,6 +22,7 @@ final class TimerService {
     var standingTime: TimeInterval {
         didSet {
             if currentActivityType == .standing {
+                oldTimeInterval = oldValue
                 setupTimer(ofType: .standing)
             }
         }
@@ -31,17 +32,20 @@ final class TimerService {
     var sittingTime: TimeInterval {
         didSet {
             if currentActivityType == .sitting {
+                oldTimeInterval = oldValue
                 setupTimer(ofType: .sitting)
             }
         }
     }
     
+    //used to get TimeInterval of non-repeating timer after its TimeInterval was
+    //changed during it was active
+    private var oldTimeInterval: TimeInterval?
+    
     static let shared = TimerService()
     
     private var timer = Timer()
-    
-    private var currentMode: TimerType?
-    
+        
     weak var bluetoothServiceDelegate: BluetoothServiceDelegate?
     
     private init() {}
@@ -59,10 +63,10 @@ final class TimerService {
         if currentActivityType == timerType {
             let timeElapsed: TimeInterval
             if timer.isValid {
-                timeElapsed = timer.timeInterval - timer.fireDate.timeIntervalSinceNow
-                print("timer is set to - ", timer.timeInterval, "   from now to fire date - ", timer.fireDate.timeIntervalSinceNow)
+                timeElapsed = oldTimeInterval ?? newInterval - timer.fireDate.timeIntervalSinceNow
+                print("timer is set to - ", timer.timeInterval, "\nfrom now to fire date - ", timer.fireDate.timeIntervalSinceNow)
             } else {
-                timeElapsed = timer.timeInterval
+                timeElapsed = oldTimeInterval ?? newInterval
             }
             
             let timeRemainingForNewTimer = newInterval - timeElapsed
@@ -111,6 +115,15 @@ final class TimerService {
         let date = Calendar.current.date(from: components)
                 
         return date ?? Date()
+    }
+    
+    func prolongCurrentInterval() {
+        switch currentActivityType {
+        case .sitting:
+            sittingTime += Constants.postponeInterval
+        case .standing:
+            standingTime += Constants.postponeInterval
+        }
     }
     
 }

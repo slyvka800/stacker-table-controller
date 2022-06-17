@@ -10,4 +10,5 @@ import Foundation
 
 struct Constants {
     static let notiifcationBeforeMovementInterval: TimeInterval = 1
+    static let postponeInterval: TimeInterval = 300
 }
