@@ -14,6 +14,9 @@ class HeightMenuController {
     private var popover: NSPopover
     private var vcIdentifier = "HeightMenu"
     private var button: NSButton
+    @IBOutlet weak var maxHeight: NSTextField!
+    @IBOutlet weak var minHeight: NSTextField!
+    @IBOutlet weak var applyButton: NSButton!
     
     init(nextTo button: NSButton) {
         self.popover = NSPopover()

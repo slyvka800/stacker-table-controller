@@ -842,8 +842,8 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="HVb-Ia-9fj">
                                                     <font key="font" metaFont="system"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="676640461.51527405">
-                                                        <!--2022-06-11 11:41:01 +0000-->
+                                                    <date key="date" timeIntervalSinceReferenceDate="682085617.966712">
+                                                        <!--2022-08-13 12:13:37 +0000-->
                                                     </date>
                                                     <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
@@ -897,8 +897,8 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="Vot-vn-ZBb">
                                                     <font key="font" metaFont="system"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="677086977.01223195">
-                                                        <!--2022-06-16 15:42:57 +0000-->
+                                                    <date key="date" timeIntervalSinceReferenceDate="682085617.97348297">
+                                                        <!--2022-08-13 12:13:37 +0000-->
                                                     </date>
                                                     <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
@@ -1139,6 +1139,11 @@
                                 <color key="value" red="0.47058823529999999" green="0.48627450979999998" blue="0.6588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <outlet property="applyButton" destination="JFe-Bc-Ym7" id="aUb-au-hJO"/>
+                            <outlet property="maxHeight" destination="JWa-DW-1pJ" id="wQ4-MS-d1g"/>
+                            <outlet property="minHeight" destination="YpC-Tw-iWv" id="038-6L-VfP"/>
+                        </connections>
                     </view>
                 </viewController>
                 <customObject id="blw-Xh-lSL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

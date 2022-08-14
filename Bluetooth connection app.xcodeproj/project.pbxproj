@@ -21,6 +21,7 @@
 		EF809DB927D4F93B00F5D60D /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF809DB827D4F93B00F5D60D /* ToggleButton.swift */; };
 		EF809DBB27D51B7E00F5D60D /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF809DBA27D51B7E00F5D60D /* FlatButton.swift */; };
 		EF9F60D0275B723F00E2214A /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9F60CF275B723F00E2214A /* ReusableView.swift */; };
+		EFAE68DA28A7C5B900776075 /* HeightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAE68D928A7C5B900776075 /* HeightService.swift */; };
 		EFD0C156261BAD7400E4473B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0C155261BAD7400E4473B /* AppDelegate.swift */; };
 		EFD0C158261BAD7400E4473B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0C157261BAD7400E4473B /* ViewController.swift */; };
 		EFD0C15A261BAD7500E4473B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFD0C159261BAD7500E4473B /* Assets.xcassets */; };
@@ -61,6 +62,7 @@
 		EF809DB827D4F93B00F5D60D /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
 		EF809DBA27D51B7E00F5D60D /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		EF9F60CF275B723F00E2214A /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
+		EFAE68D928A7C5B900776075 /* HeightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightService.swift; sourceTree = "<group>"; };
 		EFD0C152261BAD7400E4473B /* Bluetooth connection app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluetooth connection app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFD0C155261BAD7400E4473B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFD0C157261BAD7400E4473B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				EF414CB527E792CB0018554E /* TimerService.swift */,
+				EFAE68D928A7C5B900776075 /* HeightService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				EFD0C156261BAD7400E4473B /* AppDelegate.swift in Sources */,
 				EFD6D2C827D65039001BE785 /* CustomizablePopover.swift in Sources */,
 				EF6123B327E8B49C0085A447 /* Constants.swift in Sources */,
+				EFAE68DA28A7C5B900776075 /* HeightService.swift in Sources */,
 				EF809DB527D4F6C500F5D60D /* Extensions.swift in Sources */,
 				EF414CB327E78D700018554E /* ActionHandler.swift in Sources */,
 				EF414CB627E792CB0018554E /* TimerService.swift in Sources */,

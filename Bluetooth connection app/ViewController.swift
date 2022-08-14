@@ -47,6 +47,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     private var stopSendingCommands = true
     private let commandUpArray: [UInt8] = [0xF1, 0xF1, 0x01, 0x00, 0x01, 0x7E]
     private let commandDownArray: [UInt8] = [0xF1, 0xF1, 0x02, 0x00, 0x02, 0x7E]
+    private let commandGetMinMaxHeight: [UInt8] = [0xF1, 0xF1, 0x0C, 0x00, 0x0C, 0x7E]
     private let timeInterval = 0.5
     
     private var commandsSendingTimer: Timer?
@@ -132,6 +133,13 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         } else {
             data = NSData(bytes: commandDownArray, length: 6)
         }
+        guard characteristicForWriting != nil else {return}
+        peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withResponse)
+    }
+    
+    func askMinMaxHeight() {
+        let data = NSData(bytes: commandGetMinMaxHeight, length: 6)
+    
         guard characteristicForWriting != nil else {return}
         peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withResponse)
     }
@@ -283,22 +291,136 @@ extension ViewController{
             }
             if characteristic.properties.contains(.notify) {
                 print("\(characteristic.uuid): properties contains .notify")
+                peripheral.setNotifyValue(true, for: characteristic)
+                askMinMaxHeight()
             }
-            if characteristic.properties.contains(.write) {
-                print("\(characteristic.uuid): properties contains .write")
-                characteristicForWriting = characteristic
-            }
+//            if characteristic.properties.contains(.write) {
+//                print("\(characteristic.uuid): properties contains .write")
+//                characteristicForWriting = characteristic
+//            }
             if characteristic.uuid.uuidString.contains("FF01") {
                 characteristicForWriting = characteristic
-                break
+//                break
             }
         }
 //        NSWorkspace.willSleepNotification
         
     }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        print("new NotificationsState value ", characteristic, characteristic.isNotifying)
+    }
         
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+//        MARK:  Received commands debug
         
+//        var characteristicsValue = characteristic.value
+//        withUnsafeBytes(of: &characteristicsValue) { (bytes) in
+//            var arr = [String]()
+//            for byte in bytes {
+//                arr.append(String(format:"%02X", byte))
+//                if arr.last == "7E" {
+//                    break
+//                }
+//            }
+//            print(arr)
+//        }
+        
+        var characteristicsValue = characteristic.value
+        withUnsafeBytes(of: &characteristicsValue) { (bytes) in
+            for (index, byte) in bytes.enumerated() {
+                let hexByte = String(format:"%02X", byte)
+                
+                if hexByte == "7E" { return }
+                
+                switch index {
+                case 0...1:
+                    if hexByte != "F2" {
+                        return
+                    }
+                case 2:
+                    switch hexByte {
+                    case "01":
+                        let height = getHeightFromCharacteristic(characteristic: characteristic)
+                        
+                        if let height = height {
+                            // should remove magic numbers
+                            if (400...2000).contains(height) {
+                                HeightService.shared.currentHeight = height
+                            }
+                        }
+                    case "07":
+                        let minMaxHeight = getMinMaxHeight(characteristic: characteristic)
+                        print("min — \(String(describing: minMaxHeight?.min)), max — \(String(describing: minMaxHeight?.max))")
+                    default:
+                        return
+                    }
+                default:
+                    return
+                }
+            }
+        }
+
+        
+    }
+    
+    private func getHeightFromCharacteristic(characteristic: CBCharacteristic) -> Int? {
+        let value = characteristic.value?.withUnsafeBytes { (bytes) -> Int? in
+            
+            var heightHighBite: Int?
+            var heightLowBite: Int?
+
+            for (index, byte) in bytes.enumerated() {
+                if index == 4 {
+                    heightHighBite = Int(byte)
+                }
+                else if index == 5 {
+                    heightLowBite = Int(byte)
+                }
+            }
+            guard let heightLowBite = heightLowBite, let heightHighBite = heightHighBite else {
+                return nil
+            }
+            let heightInMM = heightHighBite * 256 + heightLowBite
+
+            return heightInMM
+        }
+        
+        return value
+    }
+    
+    private func getMinMaxHeight(characteristic: CBCharacteristic) -> (min: Int, max: Int)? {
+        let value = characteristic.value?.withUnsafeBytes { (bytes) -> (min: Int, max: Int) in
+            
+            var iterator = bytes.makeIterator()
+            var index = 0
+            
+            var minHeight: Int = 400
+            var maxHeight: Int = 1400
+            
+            while let byte = iterator.next() {
+                if index == 4 {
+                    maxHeight = Int(byte) * 256 + Int(iterator.next() ?? UInt8(0))
+                    index += 1
+                }
+                if index == 6 {
+                    minHeight = Int(byte) * 256 + Int(iterator.next() ?? UInt8(0))
+                    index += 1
+                }
+                index += 1
+            }
+
+//            for (index, byte) in bytes.enumerated() {
+//                if index == 4 {
+//
+//                }
+//            }
+            
+
+            return (minHeight, maxHeight)
+        }
+        
+        return value
     }
 }
 
