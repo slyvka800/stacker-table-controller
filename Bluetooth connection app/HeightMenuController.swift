@@ -9,18 +9,37 @@
 import Foundation
 import AppKit
 
-class HeightMenuController {
+class HeightMenuController: NSViewController {
     
-    private var popover: NSPopover
-    private var vcIdentifier = "HeightMenu"
-    private var button: NSButton
-    @IBOutlet weak var maxHeight: NSTextField!
-    @IBOutlet weak var minHeight: NSTextField!
+    private var popover = NSPopover()
+    static private var vcIdentifier = "HeightMenu"
+    private var button: NSButton?
+    @IBOutlet weak var maxHeightTF: NSTextField!
+    @IBOutlet weak var minHeightTF: NSTextField!
     @IBOutlet weak var applyButton: NSButton!
     
-    init(nextTo button: NSButton) {
-        self.popover = NSPopover()
-        self.button = button
+//    init(nextTo button: NSButton) {
+//        self.popover = NSPopover()
+//        self.button = button
+//
+//        let onlyIntegerInHeightsRangeFormatter = OnlyIntegerInHeightsRangeFormatter()
+//        maxHeightTF.formatter = onlyIntegerInHeightsRangeFormatter
+//        minHeightTF.formatter = onlyIntegerInHeightsRangeFormatter
+//    }
+    
+    class func loadFromNib(nextTo button: NSButton) -> HeightMenuController {
+        let vc = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: Self.vcIdentifier) as! HeightMenuController
+        vc.button = button
+        vc.popover.contentViewController = vc
+        return vc
+    }
+            
+    override func viewDidLoad() {
+        popover.behavior = .transient
+
+        let onlyIntegerInHeightsRangeFormatter = OnlyIntegerInHeightsRangeFormatter()
+        maxHeightTF.formatter = onlyIntegerInHeightsRangeFormatter
+        minHeightTF.formatter = onlyIntegerInHeightsRangeFormatter
     }
     
     @objc func togglePopover() {
@@ -31,12 +50,50 @@ class HeightMenuController {
         }
     }
     
-    func showPopover() {
-        let vc = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: vcIdentifier) as! NSViewController
-        popover.contentViewController = vc
+    private func showPopover() {
+        guard let button = button else {
+            return
+        }
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .maxY)
-        popover.behavior = .transient
+
     }
     
-    func hidePopover() {}
+    private func hidePopover() {
+        popover.close()
+    }
+    
+    @IBAction func maxHeightTextFieldOutOfFocus(_ sender: Any) {
+        keepInRange(textField: maxHeightTF)
+    }
+    
+    @IBAction func minHeightTextFieldOutOfFocus(_ sender: Any) {
+        keepInRange(textField: minHeightTF)
+    }
+    
+    func keepInRange(textField: NSTextField) {
+        
+        let minHeight = HeightService.shared.minMaxHeight?.min ?? Constants.defaultHeightRange.min
+        let maxHeight = HeightService.shared.minMaxHeight?.max ?? Constants.defaultHeightRange.max
+        
+        if textField.integerValue < minHeight {
+            textField.integerValue = minHeight
+        }
+        
+        if textField.integerValue > maxHeight {
+            textField.integerValue = maxHeight
+        }
+    }
 }
+
+class OnlyIntegerInHeightsRangeFormatter: NumberFormatter {
+    
+    override func isPartialStringValid(_ partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+        
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: partialString)) {
+            return true
+        }
+        
+        return false
+    }
+}
+

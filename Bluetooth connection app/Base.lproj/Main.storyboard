@@ -842,8 +842,8 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="HVb-Ia-9fj">
                                                     <font key="font" metaFont="system"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="682085617.966712">
-                                                        <!--2022-08-13 12:13:37 +0000-->
+                                                    <date key="date" timeIntervalSinceReferenceDate="682161562.47885096">
+                                                        <!--2022-08-14 09:19:22 +0000-->
                                                     </date>
                                                     <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
@@ -897,8 +897,8 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="Vot-vn-ZBb">
                                                     <font key="font" metaFont="system"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="682085617.97348297">
-                                                        <!--2022-08-13 12:13:37 +0000-->
+                                                    <date key="date" timeIntervalSinceReferenceDate="682161562.485811">
+                                                        <!--2022-08-14 09:19:22 +0000-->
                                                     </date>
                                                     <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
@@ -1050,10 +1050,10 @@
             </objects>
             <point key="canvasLocation" x="42" y="418.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Height Menu Controller-->
         <scene sceneID="vdF-CO-gXV">
             <objects>
-                <viewController storyboardIdentifier="HeightMenu" id="8M0-7O-Cpn" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HeightMenu" id="8M0-7O-Cpn" customClass="HeightMenuController" customModule="Bluetooth_connection_app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="lis-kr-e6u" customClass="CustomizablePopover" customModule="Bluetooth_connection_app" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1069,6 +1069,9 @@
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="maxHeightTextFieldOutOfFocus:" target="8M0-7O-Cpn" id="eqo-zy-1UC"/>
+                                </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YpC-Tw-iWv">
                                 <rect key="frame" x="124" y="62" width="96" height="21"/>
@@ -1077,6 +1080,9 @@
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="minHeightTextFieldOutOfFocus:" target="8M0-7O-Cpn" id="dIu-p3-Tal"/>
+                                </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1gc-EY-wMb">
                                 <rect key="frame" x="7" y="117" width="111" height="16"/>
@@ -1139,12 +1145,12 @@
                                 <color key="value" red="0.47058823529999999" green="0.48627450979999998" blue="0.6588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
-                        <connections>
-                            <outlet property="applyButton" destination="JFe-Bc-Ym7" id="aUb-au-hJO"/>
-                            <outlet property="maxHeight" destination="JWa-DW-1pJ" id="wQ4-MS-d1g"/>
-                            <outlet property="minHeight" destination="YpC-Tw-iWv" id="038-6L-VfP"/>
-                        </connections>
                     </view>
+                    <connections>
+                        <outlet property="applyButton" destination="JFe-Bc-Ym7" id="mdb-NI-vCF"/>
+                        <outlet property="maxHeightTF" destination="JWa-DW-1pJ" id="XDW-m6-TBA"/>
+                        <outlet property="minHeightTF" destination="YpC-Tw-iWv" id="A9q-WI-opV"/>
+                    </connections>
                 </viewController>
                 <customObject id="blw-Xh-lSL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

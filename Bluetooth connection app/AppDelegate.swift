@@ -57,11 +57,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             print(currentTime, "- woke up")
         } else if aNotification.name == NSWorkspace.screensDidSleepNotification{
 //            activityLog += currentTime + " fall asleep\n"
-//            VC.printActivity(activityLog)
             print(currentTime, "- screen is asleep")
         } else if aNotification.name == NSWorkspace.screensDidWakeNotification{
 //            activityLog += currentTime + " wake up\n"
-//            VC.printActivity(activityLog)
             print(currentTime, "- screen is awake")
         } else{
             print("Unknown notification")

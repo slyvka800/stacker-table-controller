@@ -13,6 +13,7 @@ class HeightService {
     static let shared = HeightService()
     
     var currentHeight: Int?
+    var minMaxHeight: (min: Int, max: Int)?
     
     private init() {}
 }

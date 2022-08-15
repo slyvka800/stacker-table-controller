@@ -71,7 +71,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         view.layer?.backgroundColor = NSColor(red: 0.333, green: 0.42, blue: 0.5, alpha: 1).cgColor
         view.layer?.cornerRadius = 15
         
-        heightMenuController = HeightMenuController(nextTo: heightAdjustButton)
+        heightMenuController = HeightMenuController.loadFromNib(nextTo: heightAdjustButton)
         heightAdjustButton.target = heightMenuController
         heightAdjustButton.action = #selector(heightMenuController?.togglePopover)
         
@@ -94,15 +94,15 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         if upButtonOutlet.state == .on {
             stopSendingCommands = true
             downButtonOutlet.state = .off
-            print(upButtonOutlet.state)
+//            print(upButtonOutlet.state)
         } else {
             stopSendingCommands = false
-            print(upButtonOutlet.state)
+//            print(upButtonOutlet.state)
         }
         
         if commandsSendingTimer == nil {
             commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
-            print(upButtonOutlet.state)
+//            print(upButtonOutlet.state)
         }
     }
     
@@ -141,7 +141,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         let data = NSData(bytes: commandGetMinMaxHeight, length: 6)
     
         guard characteristicForWriting != nil else {return}
-        peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withResponse)
+        peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withoutResponse)
     }
     
     func moveTable(_ direction: DirectionCommand) {
@@ -153,11 +153,6 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
             self?.stopSendingCommands = true
         }
-    }
-    
-    func printActivity(_ messageStr: String){
-//        print(messageStr)
-//        displayWithActivity?.stringValue = messageStr
     }
     
     func getTimeInterval(intervalType: IntervalType) -> TimeInterval {
@@ -202,10 +197,8 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         case .unauthorized:
             print("central.state is .unauthorized")
         case .poweredOff:
-//            displayWithActivity.stringValue = "Turn bluetooth on!"
             print("Turn bluetooth on!")
         case .poweredOn:
-//            displayWithActivity.stringValue = "Bluetooth is turned on"
             foundPeripherals = []
             centralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
             if let lastConnectedPeripheral = self.lastConnectedPeripheral {
@@ -252,13 +245,11 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         self.lastConnectedPeripheral = peripheral
         peripheral.delegate = self
         
-//        displayWithActivity.stringValue = "Connected to \(peripheral.name ?? "unknown")!"
-        peripheral.discoverServices(nil)
+        peripheral.discoverServices([CBUUID(string: "FF12")])
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         self.peripheral = nil
-//        displayWithActivity.stringValue = "Disconnected"
     }
     
 //    func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
@@ -275,8 +266,8 @@ extension ViewController{
         guard let services = peripheral.services else { return }
         
         for service in services{
-            print(service)
-            peripheral.discoverCharacteristics(nil, for: service)
+//            print(service)
+            peripheral.discoverCharacteristics([CBUUID(string: "FF01"), CBUUID(string: "FF02")], for: service)
         }
     }
     
@@ -284,27 +275,17 @@ extension ViewController{
         guard let characteristics = service.characteristics else {return}
         
         for characteristic in characteristics{
-            print(characteristic)
             if characteristic.properties.contains(.read) {
-                print("\(characteristic.uuid): properties contains .read")
                 peripheral.readValue(for: characteristic)
             }
+            if characteristic.uuid.uuidString.contains("FF01") {
+                characteristicForWriting = characteristic
+            }
             if characteristic.properties.contains(.notify) {
-                print("\(characteristic.uuid): properties contains .notify")
                 peripheral.setNotifyValue(true, for: characteristic)
                 askMinMaxHeight()
             }
-//            if characteristic.properties.contains(.write) {
-//                print("\(characteristic.uuid): properties contains .write")
-//                characteristicForWriting = characteristic
-//            }
-            if characteristic.uuid.uuidString.contains("FF01") {
-                characteristicForWriting = characteristic
-//                break
-            }
         }
-//        NSWorkspace.willSleepNotification
-        
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
@@ -352,6 +333,7 @@ extension ViewController{
                     case "07":
                         let minMaxHeight = getMinMaxHeight(characteristic: characteristic)
                         print("min — \(String(describing: minMaxHeight?.min)), max — \(String(describing: minMaxHeight?.max))")
+                        HeightService.shared.minMaxHeight = minMaxHeight
                     default:
                         return
                     }

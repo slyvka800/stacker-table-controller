@@ -68,8 +68,10 @@ final class TimerService {
             } else {
                 timeElapsed = oldTimeInterval ?? newInterval
             }
+            print(timeElapsed)
             
             let timeRemainingForNewTimer = newInterval - timeElapsed
+            print(timeRemainingForNewTimer)
             let timeToNotification = timeRemainingForNewTimer - Constants.notiifcationBeforeMovementInterval
             timer.invalidate()
             timer = Timer.scheduledTimer(timeInterval: timeToNotification, target: self, selector: #selector(endInterval), userInfo: nil, repeats: false)
