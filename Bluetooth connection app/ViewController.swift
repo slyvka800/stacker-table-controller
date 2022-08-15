@@ -239,7 +239,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
 //            return
 //        }
         toggleConnectionIndicator(peripheral: peripheral, isConnected: true)
-        TimerService.shared.setupTimer(ofType: TimerService.shared.currentActivityType)
+//        TimerService.shared.setupTimer(ofType: TimerService.shared.currentActivityType)
         
         self.peripheral = peripheral
         self.lastConnectedPeripheral = peripheral
@@ -283,7 +283,9 @@ extension ViewController{
             }
             if characteristic.properties.contains(.notify) {
                 peripheral.setNotifyValue(true, for: characteristic)
-                askMinMaxHeight()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                    self?.askMinMaxHeight()
+                })
             }
         }
     }
