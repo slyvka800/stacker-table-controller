@@ -72,8 +72,8 @@ class HeightMenuController: NSViewController {
     
     func keepInRange(textField: NSTextField) {
         
-        let minHeight = HeightService.shared.minMaxHeight?.min ?? Constants.defaultHeightRange.min
-        let maxHeight = HeightService.shared.minMaxHeight?.max ?? Constants.defaultHeightRange.max
+        let minHeight = HeightService.shared.tableHeightRange?.min ?? Constants.defaultHeightRange.min
+        let maxHeight = HeightService.shared.tableHeightRange?.max ?? Constants.defaultHeightRange.max
         
         if textField.integerValue < minHeight {
             textField.integerValue = minHeight

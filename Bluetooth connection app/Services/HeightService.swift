@@ -12,8 +12,11 @@ class HeightService {
     
     static let shared = HeightService()
     
+    @StorageOptional(key: "userHeightRange")
+    var userHeightRange: (min: Int, max: Int)?
+    
     var currentHeight: Int?
-    var minMaxHeight: (min: Int, max: Int)?
+    var tableHeightRange: (min: Int, max: Int)?
     
     private init() {}
 }

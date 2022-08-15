@@ -239,7 +239,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
 //            return
 //        }
         toggleConnectionIndicator(peripheral: peripheral, isConnected: true)
-//        TimerService.shared.setupTimer(ofType: TimerService.shared.currentActivityType)
+        TimerService.shared.setupTimer(ofType: TimerService.shared.currentActivityType)
         
         self.peripheral = peripheral
         self.lastConnectedPeripheral = peripheral
@@ -335,7 +335,7 @@ extension ViewController{
                     case "07":
                         let minMaxHeight = getMinMaxHeight(characteristic: characteristic)
                         print("min — \(String(describing: minMaxHeight?.min)), max — \(String(describing: minMaxHeight?.max))")
-                        HeightService.shared.minMaxHeight = minMaxHeight
+                        HeightService.shared.tableHeightRange = minMaxHeight
                     default:
                         return
                     }

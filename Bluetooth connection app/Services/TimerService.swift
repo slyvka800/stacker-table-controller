@@ -18,7 +18,7 @@ final class TimerService {
     @RawRepresentableStorage("currentActivityTimer", defaultValue: TimerType.sitting)
     var currentActivityType: TimerType
     
-    @Storage(key: "standingTime", defaultValue: TimeInterval(180))
+    @StorageCodable(key: "standingTime", defaultValue: TimeInterval(180))
     var standingTime: TimeInterval {
         didSet {
             if currentActivityType == .standing {
@@ -28,7 +28,7 @@ final class TimerService {
         }
     }
     
-    @Storage(key: "sittingTime", defaultValue: TimeInterval(60))
+    @StorageCodable(key: "sittingTime", defaultValue: TimeInterval(60))
     var sittingTime: TimeInterval {
         didSet {
             if currentActivityType == .sitting {

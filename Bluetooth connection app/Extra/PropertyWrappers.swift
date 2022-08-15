@@ -35,7 +35,7 @@ struct RawRepresentableStorage<T: RawRepresentable> {
 }
 
 @propertyWrapper
-struct Storage<T: Codable> {
+struct StorageCodable<T: Codable> {
     let key: String
     let defaultValue: T
 
@@ -50,8 +50,50 @@ struct Storage<T: Codable> {
         }
         set {
             let data = try? JSONEncoder().encode(newValue)
-
             UserDefaults.standard.set(data, forKey: key)
         }
+    }
+}
+
+
+private protocol AnyOptional {
+    var isNil: Bool { get }
+}
+
+extension Optional: AnyOptional {
+    var isNil: Bool { self == nil }
+}
+
+@propertyWrapper
+struct StorageOptional<T> {
+    private let key: String
+    private let defaultValue: T
+
+    var wrappedValue: T {
+        get {
+            guard let value = UserDefaults.standard.value(forKey: key) as? T else {
+                return defaultValue
+            }
+
+            return value
+        }
+        set {
+            if let optional = newValue as? AnyOptional, optional.isNil {
+                UserDefaults.standard.removeObject(forKey: key)
+            } else {
+                UserDefaults.standard.setValue(newValue, forKey: key)
+            }
+        }
+    }
+    
+    init(wrappedValue defaultValue: T, key: String) {
+        self.defaultValue = defaultValue
+        self.key = key
+    }
+}
+
+extension StorageOptional where T: ExpressibleByNilLiteral {
+    init(key: String) {
+        self.init(wrappedValue: nil, key: key)
     }
 }
