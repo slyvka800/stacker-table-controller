@@ -96,7 +96,12 @@ final class TimerService {
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.notiifcationBeforeMovementInterval) { [weak self] in
             guard let self = self else { return }
             print("there should be table moving")
-            self.bluetoothServiceDelegate?.moveTable(notificationType == .goingUp ? ViewController.DirectionCommand.up : ViewController.DirectionCommand.down)
+//            self.bluetoothServiceDelegate?.moveTable(notificationType == .goingUp ? ViewController.DirectionCommand.up : ViewController.DirectionCommand.down)
+            
+            let nextHeight = (self.currentActivityType == .sitting) ? HeightService.shared.userHeightRange?.max : HeightService.shared.userHeightRange?.min
+            guard let nextHeight = nextHeight else { return }
+            
+            self.bluetoothServiceDelegate?.moveTo(height: nextHeight)
             self.setupTimer(ofType: self.currentActivityType == .sitting ? .standing : .sitting)
         }
     }

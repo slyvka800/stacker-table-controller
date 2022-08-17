@@ -21,7 +21,8 @@ struct PeripheralPackage {
 }
 
 protocol BluetoothServiceDelegate: AnyObject {
-    func moveTable(_ direction: ViewController.DirectionCommand)
+//    func moveTable(_ direction: ViewController.DirectionCommand)
+    func moveTo(height: Int)
 }
 
 class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDelegate, BluetoothServiceDelegate{
@@ -37,7 +38,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     }
     
     var centralManager: CBCentralManager!
-    private(set) var peripheral: CBPeripheral!
+    private(set) var peripheral: CBPeripheral?
     private var lastConnectedPeripheral: CBPeripheral?
     private var characteristicForWriting: CBCharacteristic!
     private(set) var foundPeripherals: Set<CBPeripheral> = []
@@ -63,6 +64,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     @IBOutlet weak var standModeInterval: NSDatePicker!
     
     @IBOutlet weak var peripheralsMenuCollectionView: NSCollectionView!
+    @IBOutlet weak var statsViewLabel: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,37 +85,42 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         TimerService.shared.bluetoothServiceDelegate = self
     }
     
+    func fillStatsLabel() {
+        if let userHeightRange = HeightService.shared.userHeightRange {
+            statsViewLabel.stringValue = "Sit mode height — \(userHeightRange.min)" + "\n" + "Stand mode height — \(userHeightRange.max)"
+        } else {
+            statsViewLabel.stringValue = "Set up heights in Height menu. \n Without it table won't move automatically"
+        }
+    }
+    
     override func viewWillAppear() {
-//        NotificationService.shared.sendNotification(notificationType: .goingDown)
+        fillStatsLabel()
     }
     
     @IBAction func upButton(_ sender: Any) {
         
         command = .up
         
-        if upButtonOutlet.state == .on {
+        if upButtonOutlet.state == .off {
             stopSendingCommands = true
-            downButtonOutlet.state = .off
-//            print(upButtonOutlet.state)
         } else {
             stopSendingCommands = false
-//            print(upButtonOutlet.state)
+            downButtonOutlet.state = .off
         }
         
         if commandsSendingTimer == nil {
             commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
-//            print(upButtonOutlet.state)
         }
     }
     
     @IBAction func downButton(_ sender: Any) {
         command = .down
         
-        if downButtonOutlet.state == .on {
+        if downButtonOutlet.state == .off {
             stopSendingCommands = true
-            upButtonOutlet.state = .off
         } else {
             stopSendingCommands = false
+            upButtonOutlet.state = .off
         }
 
         if commandsSendingTimer == nil {
@@ -135,6 +142,37 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         }
         guard characteristicForWriting != nil else {return}
         peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withResponse)
+        
+        //check if achieved max/min height
+        if !HeightService.shared.isCurrentHeightInTablesRange() {
+            //check if it still at the range`s end after receiving new height info
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                if !HeightService.shared.isCurrentHeightInTablesRange() {
+                    print("AT THE RANGE`S END")
+                    self?.stopSendingCommands = true
+                    self?.upButtonOutlet.state = .off
+                    self?.downButtonOutlet.state = .off
+                }
+            }
+        }
+    }
+    
+    func moveTo(height: Int) {
+        var commandArray: [UInt8] = [0xF1, 0xF1, 0x1B, 0x02, 0x00, 0x00, 0x00, 0x7E]
+        
+        let heightHighByte = Int(height / 256)
+        let heightLowByte = height % 256
+        
+        let sum = (Int(commandArray[2]) + Int(commandArray[3]) + heightHighByte + Int(heightLowByte)) % 256
+        
+        commandArray[4] = UInt8(heightHighByte)
+        commandArray[5] = UInt8(heightLowByte)
+        commandArray[6] = UInt8(sum)
+        
+        let data = NSData(bytes: commandArray, length: 8)
+        
+        peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withResponse)
+        
     }
     
     func askMinMaxHeight() {
@@ -144,16 +182,18 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
         peripheral?.writeValue(data as Data, for: characteristicForWriting, type: .withoutResponse)
     }
     
-    func moveTable(_ direction: DirectionCommand) {
-        command = direction
-        stopSendingCommands = false
-        
-        commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-            self?.stopSendingCommands = true
-        }
-    }
+//  unused function
+    
+//    func moveTable(_ direction: DirectionCommand) {
+//        command = direction
+//        stopSendingCommands = false
+//
+//        commandsSendingTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: true)
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+//            self?.stopSendingCommands = true
+//        }
+//    }
     
     func getTimeInterval(intervalType: IntervalType) -> TimeInterval {
         let dateValue: Date
@@ -239,7 +279,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
 //            return
 //        }
         toggleConnectionIndicator(peripheral: peripheral, isConnected: true)
-        TimerService.shared.setupTimer(ofType: TimerService.shared.currentActivityType)
+        TimerService.shared.setupTimer(ofType: (TimerService.shared.currentActivityType == .sitting) ? .standing : .sitting )
         
         self.peripheral = peripheral
         self.lastConnectedPeripheral = peripheral
@@ -250,6 +290,7 @@ class ViewController: NSViewController, CBPeripheralDelegate, CBCentralManagerDe
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         self.peripheral = nil
+        toggleConnectionIndicator(peripheral: peripheral, isConnected: false)
     }
     
 //    func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
@@ -275,6 +316,7 @@ extension ViewController{
         guard let characteristics = service.characteristics else {return}
         
         for characteristic in characteristics{
+//            print(characteristic)
             if characteristic.properties.contains(.read) {
                 peripheral.readValue(for: characteristic)
             }

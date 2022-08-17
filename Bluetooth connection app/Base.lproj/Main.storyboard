@@ -770,6 +770,17 @@
                                     </button>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="lD2-9b-k8O" customClass="ReusableView" customModule="Bluetooth_connection_app" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="252" height="110"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IQy-Gy-LpU">
+                                                <rect key="frame" x="18" y="32" width="216" height="58"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="oZx-HM-HqB">
+                                                    <font key="font" metaFont="system" size="17"/>
+                                                    <color key="textColor" red="0.047058823530000002" green="0.08235294118" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="110" id="ov0-WD-YpU"/>
                                             <constraint firstAttribute="width" constant="252" id="zs0-ZC-Idy"/>
@@ -842,8 +853,8 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="HVb-Ia-9fj">
                                                     <font key="font" metaFont="system"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="682161562.47885096">
-                                                        <!--2022-08-14 09:19:22 +0000-->
+                                                    <date key="date" timeIntervalSinceReferenceDate="682253468.97996902">
+                                                        <!--2022-08-15 10:51:08 +0000-->
                                                     </date>
                                                     <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
@@ -897,8 +908,8 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <datePickerCell key="cell" alignment="left" datePickerMode="range" datePickerStyle="textField" useCurrentDate="YES" id="Vot-vn-ZBb">
                                                     <font key="font" metaFont="system"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="682161562.485811">
-                                                        <!--2022-08-14 09:19:22 +0000-->
+                                                    <date key="date" timeIntervalSinceReferenceDate="682253468.98650599">
+                                                        <!--2022-08-15 10:51:08 +0000-->
                                                     </date>
                                                     <color key="backgroundColor" red="0.33333333329999998" green="0.41960784309999999" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
@@ -1038,10 +1049,11 @@
                         <outlet property="downButtonOutlet" destination="7ql-8P-FCC" id="3kQ-Rj-Z7P"/>
                         <outlet property="heightAdjustButton" destination="h6p-w8-HhL" id="9Md-4U-kqG"/>
                         <outlet property="leftView" destination="PLs-Oz-vsz" id="QWM-1q-9XE"/>
-                        <outlet property="peripheralsMenuCollectionView" destination="JFS-re-LMn" id="RCf-j9-MP3"/>
+                        <outlet property="peripheralsMenuCollectionView" destination="JFS-re-LMn" id="WgE-x7-q4N"/>
                         <outlet property="rightView" destination="kzH-Fu-D9t" id="Icv-BK-Cen"/>
                         <outlet property="sitModeInterval" destination="z0u-Ci-kf7" id="yfO-Bl-hRC"/>
                         <outlet property="standModeInterval" destination="9AF-uG-r6N" id="pi5-K0-3Ii"/>
+                        <outlet property="statsViewLabel" destination="IQy-Gy-LpU" id="LvY-KH-EsO"/>
                         <outlet property="topView" destination="0cP-1i-Dhs" id="icu-ZA-6aW"/>
                         <outlet property="upButtonOutlet" destination="evc-zK-ls7" id="Uh2-nL-EkF"/>
                     </connections>
@@ -1114,6 +1126,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="applyButtonPressed:" target="8M0-7O-Cpn" id="511-A3-rpd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
@@ -1147,7 +1162,6 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
-                        <outlet property="applyButton" destination="JFe-Bc-Ym7" id="mdb-NI-vCF"/>
                         <outlet property="maxHeightTF" destination="JWa-DW-1pJ" id="XDW-m6-TBA"/>
                         <outlet property="minHeightTF" destination="YpC-Tw-iWv" id="A9q-WI-opV"/>
                     </connections>

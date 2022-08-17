@@ -40,7 +40,13 @@ extension ViewController: NSCollectionViewDataSource, NSCollectionViewDelegate {
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         guard let cellIndex = indexPaths.first?.item else { return }
         if let selectedPeripheral = getFoundPeripheral(index: cellIndex) {
-            centralManager.connect(selectedPeripheral, options: nil)
+            if selectedPeripheral.state == .disconnected {
+                centralManager.connect(selectedPeripheral, options: nil)
+            }
+            else if selectedPeripheral.state == .connected {
+                centralManager.cancelPeripheralConnection(selectedPeripheral)
+            }
+            
         }
     }
     

@@ -49,9 +49,29 @@ struct StorageCodable<T: Codable> {
             return value ?? defaultValue
         }
         set {
-            let data = try? JSONEncoder().encode(newValue)
-            UserDefaults.standard.set(data, forKey: key)
+            if let optional = newValue as? AnyOptional, optional.isNil {
+                UserDefaults.standard.removeObject(forKey: key)
+            } else {
+                let data = try? JSONEncoder().encode(newValue)
+                UserDefaults.standard.set(data, forKey: key)
+            }
         }
+    }
+    
+    init(wrappedValue defaultValue: T, key: String) {
+        self.defaultValue = defaultValue
+        self.key = key
+    }
+    
+    init(key: String, defaultValue: T) {
+        self.key = key
+        self.defaultValue = defaultValue
+    }
+}
+
+extension StorageCodable where T: ExpressibleByNilLiteral {
+    init(key: String) {
+        self.init(wrappedValue: nil, key: key)
     }
 }
 
@@ -64,6 +84,7 @@ extension Optional: AnyOptional {
     var isNil: Bool { self == nil }
 }
 
+//unused wrapper
 @propertyWrapper
 struct StorageOptional<T> {
     private let key: String

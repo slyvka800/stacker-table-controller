@@ -16,7 +16,6 @@ class HeightMenuController: NSViewController {
     private var button: NSButton?
     @IBOutlet weak var maxHeightTF: NSTextField!
     @IBOutlet weak var minHeightTF: NSTextField!
-    @IBOutlet weak var applyButton: NSButton!
     
 //    init(nextTo button: NSButton) {
 //        self.popover = NSPopover()
@@ -82,6 +81,25 @@ class HeightMenuController: NSViewController {
         if textField.integerValue > maxHeight {
             textField.integerValue = maxHeight
         }
+    }
+    
+    @IBAction func applyButtonPressed(_ sender: Any) {
+        if maxHeightTF.stringValue.isEmpty {
+            maxHeightTF.becomeFirstResponder()
+            return
+        }
+        
+        if minHeightTF.stringValue.isEmpty {
+            minHeightTF.becomeFirstResponder()
+            return
+        }
+        
+        keepInRange(textField: minHeightTF)
+        keepInRange(textField: maxHeightTF)
+        
+        HeightService.shared.userHeightRange = (minHeightTF.integerValue, maxHeightTF.integerValue)
+        
+        hidePopover()
     }
 }
 
